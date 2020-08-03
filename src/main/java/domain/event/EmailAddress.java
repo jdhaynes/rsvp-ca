@@ -1,4 +1,4 @@
-package domain;
+package domain.event;
 
 public class EmailAddress {
     private String email;
@@ -7,7 +7,7 @@ public class EmailAddress {
         this.email = email;
     }
 
-    public String getEmail() {
+    public String getFull() {
         return email;
     }
 }

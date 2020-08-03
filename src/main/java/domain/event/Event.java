@@ -1,9 +1,8 @@
-package domain;
+package domain.event;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 public class Event {
     private String name;
@@ -15,7 +14,8 @@ public class Event {
 
     private Collection<Attendee> attendees;
 
-    public Event(String name, Organiser organiser, LocalDateTime startDate, LocalDateTime endDate, String description) {
+    public Event(String name, Organiser organiser, LocalDateTime startDate, LocalDateTime endDate,
+                 String description) {
         this.name = name;
         this.organiser = organiser;
         this.startDate = startDate;
@@ -31,5 +31,34 @@ public class Event {
         }
 
         attendees.add(attendee);
+    }
+
+    // Getters.
+    public String getName() {
+        return name;
+    }
+
+    public Organiser getOrganiser() {
+        return organiser;
+    }
+
+    public LocalDateTime getStartDate() {
+        return startDate;
+    }
+
+    public LocalDateTime getEndDate() {
+        return endDate;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public LocalDateTime getCreated() {
+        return created;
+    }
+
+    public Collection<Attendee> getAttendees() {
+        return attendees;
     }
 }
