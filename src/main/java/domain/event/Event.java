@@ -37,10 +37,6 @@ public class Event {
      * @param attendee The entity representing the attendee to be registered for the event.
      */
     public void registerAttendee(Attendee attendee) {
-        if(attendee == null) {
-            throw new IllegalArgumentException("Attendee cannot be null.");
-        }
-
         attendees.add(attendee);
     }
 

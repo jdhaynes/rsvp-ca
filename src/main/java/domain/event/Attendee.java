@@ -30,10 +30,6 @@ public class Attendee {
      * @param requirements A description of special requirements for the attendee.
      */
     public void defineRequirements(String requirements) {
-        if(requirements == null || requirements.isBlank()) {
-            throw new IllegalArgumentException("Requirements cannot be null or blank.");
-        }
-
         this.requirements = requirements;
     }
 

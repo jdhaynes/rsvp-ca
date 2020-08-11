@@ -15,14 +15,6 @@ public class Date {
      * @param end An object representing the end date of the event.
      */
     public Date(LocalDateTime start, LocalDateTime end) {
-        if(start == null) {
-            throw new IllegalArgumentException("Start date cannot be null.");
-        }
-
-        if(end == null) {
-            throw new IllegalArgumentException("End date cannot be null.");
-        }
-
         this.start = start;
         this.end = end;
     }
