@@ -1,5 +1,7 @@
 package domain.event;
 
+import domain.exception.DomainException;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -14,7 +16,7 @@ public class Event {
     private String description;
     private LocalDateTime created;
 
-    private Collection<Attendee> attendees;
+    private Collection<Invitation> invitations;
 
     /**
      * Creates a new event without any attendees.
@@ -29,15 +31,19 @@ public class Event {
         this.date = date;
         this.description = description;
         this.created = LocalDateTime.now();
-        this.attendees = new ArrayList<>();
+        this.invitations = new ArrayList<>();
     }
 
-    /**
-     * Registers a new person to attend the event.
-     * @param attendee The entity representing the attendee to be registered for the event.
-     */
-    public void registerAttendee(Attendee attendee) {
-        attendees.add(attendee);
+    public void sendInvitation(Invitation invitation) {
+        if(!isInFuture()) {
+            throw new DomainException("Cannot send invitation for event in the past");
+        }
+
+        invitations.add(invitation);
+    }
+
+    private boolean isInFuture() {
+        return LocalDateTime.now().compareTo(date.getStart()) < 0;
     }
 
     // Getters.
@@ -61,7 +67,7 @@ public class Event {
         return created;
     }
 
-    public Collection<Attendee> getAttendees() {
-        return attendees;
+    public Collection<Invitation> getInvitations() {
+        return invitations;
     }
 }

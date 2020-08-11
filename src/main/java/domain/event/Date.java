@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 /**
  * Value object representing the date(s) of an event as a range between two dates.
  */
-public class Date {
+public class Date implements Comparable<Date> {
     private LocalDateTime start;
     private LocalDateTime end;
 
@@ -19,6 +19,11 @@ public class Date {
         this.end = end;
     }
 
+    @Override
+    public int compareTo(Date date) {
+        return this.start.compareTo(date.start);
+    }
+
     // Getters.
     public LocalDateTime getStart() {
         return start;
@@ -27,4 +32,6 @@ public class Date {
     public LocalDateTime getEnd() {
         return end;
     }
+
+
 }
