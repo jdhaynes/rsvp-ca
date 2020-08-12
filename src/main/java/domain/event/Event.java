@@ -1,6 +1,7 @@
 package domain.event;
 
 import domain.exception.DomainException;
+import domain.invitation.Invitation;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -15,6 +16,7 @@ public class Event {
     private Date date;
     private String description;
     private LocalDateTime created;
+    private boolean cancelled;
 
     private Collection<Invitation> invitations;
 
@@ -32,6 +34,7 @@ public class Event {
         this.description = description;
         this.created = LocalDateTime.now();
         this.invitations = new ArrayList<>();
+        this.cancelled = false;
     }
 
     public void sendInvitation(Invitation invitation) {
@@ -40,6 +43,24 @@ public class Event {
         }
 
         invitations.add(invitation);
+    }
+
+    public void cancel() {
+        if(cancelled) {
+            throw new DomainException("Cannot cancel event already cancelled");
+        }
+
+        this.cancelled = true;
+        // Todo: raise domain event.
+    }
+
+    public void reschedule(Date newDate) {
+        if(cancelled) {
+            throw new DomainException("Cannot reschedule a cancelled event");
+        }
+
+        setDate(newDate);
+        // Todo: raise domain event.
     }
 
     private boolean isInFuture() {
@@ -69,5 +90,19 @@ public class Event {
 
     public Collection<Invitation> getInvitations() {
         return invitations;
+    }
+
+    public boolean isCancelled() {
+        return cancelled;
+    }
+
+    // Setters.
+
+    public void setDate(Date date) {
+        if(LocalDateTime.now().compareTo(date.getStart()) > 0) {
+            throw new DomainException("Start date must be in the future");
+        }
+
+        this.date = date;
     }
 }

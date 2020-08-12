@@ -1,4 +1,4 @@
-package domain.event;
+package domain.invitation;
 
 import java.time.LocalDateTime;
 
@@ -13,7 +13,6 @@ public class Response {
         setMessage(message);
     }
 
-    // Getters.
     public Rsvp getRsvp() {
         return rsvp;
     }
@@ -27,7 +26,6 @@ public class Response {
         return dateResponded;
     }
 
-    // Setters.
     public Response setDateResponded(LocalDateTime dateResponded) {
         this.dateResponded = dateResponded;
         return this;

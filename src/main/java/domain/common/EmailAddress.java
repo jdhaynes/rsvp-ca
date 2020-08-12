@@ -1,4 +1,4 @@
-package domain.event;
+package domain.common;
 
 public class EmailAddress {
     private String email;

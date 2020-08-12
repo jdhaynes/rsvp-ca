@@ -1,7 +1,6 @@
-package domain.event;
+package domain.invitation;
 
 public enum Rsvp {
-    AWAITING,
     ACCEPTED,
     TENTATIVE,
     REJECTED

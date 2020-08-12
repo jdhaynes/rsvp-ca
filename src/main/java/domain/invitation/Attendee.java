@@ -1,36 +1,23 @@
-package domain.event;
+package domain.invitation;
+
+import domain.common.EmailAddress;
 
 import java.time.LocalDateTime;
 
 /**
- * Entity representing a person attending an event.
+ * Value object representing the recipient of an event invitation.
  */
 public class Attendee {
     private String firstName;
     private String lastName;
     private EmailAddress emailAddress;
     private LocalDateTime registered;
-    private String requirements;
 
-    /**
-     * Registers a new attendee for an event.
-     * @param firstName The first name of the attendee.
-     * @param lastName The last name of the attendee.
-     * @param emailAddress The email address of the attendee.
-     */
     public Attendee(String firstName, String lastName, EmailAddress emailAddress) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.emailAddress = emailAddress;
         this.registered = LocalDateTime.now();
-    }
-
-    /**
-     * Defines optional special requirements for the attendee.
-     * @param requirements A description of special requirements for the attendee.
-     */
-    public void defineRequirements(String requirements) {
-        this.requirements = requirements;
     }
 
     // Getters.
@@ -50,7 +37,4 @@ public class Attendee {
         return registered;
     }
 
-    public String getRequirements() {
-        return requirements;
-    }
 }

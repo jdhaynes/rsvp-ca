@@ -1,5 +1,7 @@
 package domain.event;
 
+import domain.common.EmailAddress;
+
 import java.time.LocalDateTime;
 
 /**
