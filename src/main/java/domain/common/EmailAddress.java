@@ -14,7 +14,7 @@ public class EmailAddress {
         setEmail(email);
     }
 
-    public void setEmail(String email) {
+    private void setEmail(String email) {
         if(email == null || email.isBlank()) {
             throw new DomainException("Email address cannot be blank");
         }

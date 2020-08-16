@@ -23,15 +23,14 @@ public class Invitation {
         invitation.setAttendee(attendee);
         invitation.setResponse(null);
         return invitation;
+
     }
 
     public void respond(Rsvp rsvp, String message) {
         if(hasResponse()) {
             throw new DomainException("Cannot respond to invitation already responded to");
         }
-
         this.response = new Response(rsvp, message, LocalDateTime.now());
-        // Todo: raise responded domain event
     }
 
     private boolean hasResponse() {
@@ -39,28 +38,23 @@ public class Invitation {
     }
 
     // Setters.
-    private Invitation setInvitationId(InvitationId invitationId) {
+    private void setInvitationId(InvitationId invitationId) {
         this.invitationId = invitationId;
-        return this;
     }
 
-    private Invitation setEventId(EventId eventId) {
+    private void setEventId(EventId eventId) {
         this.eventId = eventId;
-        return this;
     }
 
-    private Invitation setAttendee(Attendee attendee) {
+    private void setAttendee(Attendee attendee) {
         this.attendee = attendee;
-        return this;
     }
 
-    private Invitation setResponse(Response response) {
+    private void setResponse(Response response) {
         this.response = response;
-        return this;
     }
 
-    private Invitation setDateCreated(LocalDateTime dateCreated) {
+    private void setDateCreated(LocalDateTime dateCreated) {
         this.dateCreated = dateCreated;
-        return this;
     }
 }

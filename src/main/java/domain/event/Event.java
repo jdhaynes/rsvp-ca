@@ -6,13 +6,12 @@ import domain.invitation.Invitation;
 import domain.invitation.InvitationId;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collection;
 
 public class Event {
     private EventId eventId;
     private String name;
     private Organiser organiser;
+    private Location location;
     private Date date;
     private String description;
     private LocalDateTime created;
@@ -23,7 +22,7 @@ public class Event {
     }
 
     public static Event register(EventId id, String name, Organiser organiser, Date date,
-                                 String description) {
+                                 String description, Location location) {
         Event event = new Event();
         event.setEventId(id);
         event.setName(name);
@@ -31,8 +30,8 @@ public class Event {
         event.setDate(date);
         event.setDescription(description);
         event.setCreated(LocalDateTime.now());
-        event.setCancelled(false);
-
+        event.setIsCancelled(false);
+        event.setLocation(location);
         return event;
     }
 
@@ -57,11 +56,10 @@ public class Event {
             throw new DomainException("Cannot cancel event already cancelled");
         }
 
-        setCancelled(true);
-        // Todo: raise domain exception
+        setIsCancelled(true);
     }
 
-    public void reschedule(Date newDate) {
+    public void reschedule(Date newDate, String newDescription) {
         if (!isInFuture()) {
             throw new DomainException("Cannot reschedule event in the past");
         }
@@ -71,14 +69,13 @@ public class Event {
         }
 
         setDate(newDate);
-        // Todo: raise domain exception
+        setDescription(description);
     }
 
     private boolean isInFuture() {
         return this.date.compareTo(LocalDateTime.now()) > 0;
     }
 
-    // Setters.
     private void setDate(Date date) {
         if (this.date.compareTo(LocalDateTime.now()) < 0) {
             throw new DomainException("Cannot register an event starting in the past");
@@ -107,7 +104,11 @@ public class Event {
         this.created = created;
     }
 
-    private void setCancelled(boolean isCancelled) {
+    private void setIsCancelled(boolean isCancelled) {
         this.isCancelled = isCancelled;
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
     }
 }
