@@ -1,9 +1,9 @@
-package domain.event;
+package domain.model.event;
 
-import domain.common.DomainException;
-import domain.invitation.Attendee;
-import domain.invitation.Invitation;
-import domain.invitation.InvitationId;
+import domain.model.common.DomainException;
+import domain.model.invitation.Attendee;
+import domain.model.invitation.Invitation;
+import domain.model.invitation.InvitationId;
 
 import java.time.LocalDateTime;
 
@@ -18,7 +18,7 @@ public class Event {
     private boolean isCancelled;
 
     private Event() {
-        // Client must construct aggregate through factory methods.
+        // Client must construct aggregate through factory methods for encapsulation.
     }
 
     public static Event register(EventId id, String name, Organiser organiser, Date date,

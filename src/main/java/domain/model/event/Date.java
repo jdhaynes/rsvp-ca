@@ -1,6 +1,6 @@
-package domain.event;
+package domain.model.event;
 
-import domain.common.DomainException;
+import domain.model.common.DomainException;
 
 import java.time.LocalDateTime;
 

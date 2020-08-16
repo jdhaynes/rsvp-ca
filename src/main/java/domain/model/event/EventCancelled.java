@@ -1,6 +1,6 @@
-package domain.event;
+package domain.model.event;
 
-import domain.common.DomainEvent;
+import domain.model.common.DomainEvent;
 
 public class EventCancelled implements DomainEvent {
 

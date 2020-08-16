@@ -1,7 +1,7 @@
-package domain.invitation;
+package domain.model.invitation;
 
-import domain.common.DomainException;
-import domain.event.EventId;
+import domain.model.common.DomainException;
+import domain.model.event.EventId;
 
 import java.time.LocalDateTime;
 
@@ -13,7 +13,7 @@ public class Invitation {
     private LocalDateTime dateCreated;
 
     private Invitation() {
-        // Client must construct aggregate through factory methods.
+        // Client must construct aggregate through factory methods for encapsulation.
     }
 
     public static Invitation send(InvitationId invitationId, EventId eventId, Attendee attendee) {

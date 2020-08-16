@@ -1,4 +1,4 @@
-package domain.common;
+package domain.model.common;
 
 /**
  * Value object representing an email address.

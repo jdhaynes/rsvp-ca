@@ -1,4 +1,4 @@
-package domain.event;
+package domain.model.event;
 
 public class EventId {
     private String id;

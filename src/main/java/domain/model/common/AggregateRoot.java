@@ -1,4 +1,4 @@
-package domain.common;
+package domain.model.common;
 
 public abstract class AggregateRoot<Id> {
     private Id id;

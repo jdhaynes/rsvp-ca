@@ -1,4 +1,4 @@
-package domain.invitation;
+package domain.model.invitation;
 
 import java.time.LocalDateTime;
 

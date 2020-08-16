@@ -1,6 +1,6 @@
-package domain.common;
+package domain.model.common;
 
-import domain.event.Date;
+import domain.model.event.Date;
 
 public interface DomainEvent {
     int eventVersion();

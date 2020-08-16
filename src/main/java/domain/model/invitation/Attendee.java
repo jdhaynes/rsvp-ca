@@ -1,7 +1,7 @@
-package domain.invitation;
+package domain.model.invitation;
 
-import domain.common.DomainException;
-import domain.common.EmailAddress;
+import domain.model.common.DomainException;
+import domain.model.common.EmailAddress;
 
 /**
  * Value object representing the personal details of the recipient of an event invitation.

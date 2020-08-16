@@ -1,4 +1,4 @@
-package domain.invitation;
+package domain.model.invitation;
 
 /**
  * Value object representing the RSVP response type to an event invitation.

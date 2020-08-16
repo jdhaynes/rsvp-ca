@@ -1,6 +1,6 @@
-package domain.event;
+package domain.model.event;
 
-import domain.common.EmailAddress;
+import domain.model.common.EmailAddress;
 
 import java.time.LocalDateTime;
 
