@@ -1,4 +1,4 @@
-package domain.exception;
+package domain.common;
 
 public class DomainException extends RuntimeException {
     private String message;

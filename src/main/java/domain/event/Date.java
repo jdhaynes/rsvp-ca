@@ -1,6 +1,6 @@
 package domain.event;
 
-import domain.exception.DomainException;
+import domain.common.DomainException;
 
 import java.time.LocalDateTime;
 
@@ -28,21 +28,16 @@ public class Date implements Comparable<Date> {
     @Override
     public int compareTo(Date date) {
         return this.start.compareTo(date.start);
-        // Todo: write a better comparator to avoid accessing start and end dates outside the object via getter.
     }
 
-    // Getters.
-    public LocalDateTime getStart() {
-        return start;
-    }
-
-    public LocalDateTime getEnd() {
-        return end;
+    public int compareTo(LocalDateTime date) {
+        return this.start.compareTo(date);
     }
 
     // Setters.
     private void setStart(LocalDateTime start) {
-        if(getEnd().compareTo(start) >= 0) {
+        // Assumes start date is set before end date through constructor, else exception.
+        if(this.end.compareTo(start) >= 0) {
             throw new DomainException("Start date must be before the end date");
         }
 
@@ -50,7 +45,8 @@ public class Date implements Comparable<Date> {
     }
 
     private void setEnd(LocalDateTime end) {
-        if(end.compareTo(getStart()) <= 0) {
+        // Assumes start date is set before end date through constructor, else exception.
+        if(end.compareTo(this.start) <= 0) {
             throw new DomainException("End date must be after the start date");
         }
 

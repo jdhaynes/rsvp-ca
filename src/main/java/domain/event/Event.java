@@ -1,108 +1,113 @@
 package domain.event;
 
-import domain.exception.DomainException;
+import domain.common.DomainException;
+import domain.invitation.Attendee;
 import domain.invitation.Invitation;
+import domain.invitation.InvitationId;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 
-/**
- * Aggregate root representing an event.
- */
 public class Event {
+    private EventId eventId;
     private String name;
     private Organiser organiser;
     private Date date;
     private String description;
     private LocalDateTime created;
-    private boolean cancelled;
+    private boolean isCancelled;
 
-    private Collection<Invitation> invitations;
-
-    /**
-     * Creates a new event without any attendees.
-     * @param name The name describing the event.
-     * @param organiser The name of the person registering and organising the event.
-     * @param date The date(s) of the event taking place.
-     * @param description A detailed description of the event, e.g. instructions for attendees.
-     */
-    public Event(String name, Organiser organiser, Date date, String description) {
-        this.name = name;
-        this.organiser = organiser;
-        this.date = date;
-        this.description = description;
-        this.created = LocalDateTime.now();
-        this.invitations = new ArrayList<>();
-        this.cancelled = false;
+    private Event() {
+        // Client must construct aggregate through factory methods.
     }
 
-    public void sendInvitation(Invitation invitation) {
-        if(!isInFuture()) {
+    public static Event register(EventId id, String name, Organiser organiser, Date date,
+                                 String description) {
+        Event event = new Event();
+        event.setEventId(id);
+        event.setName(name);
+        event.setOrganiser(organiser);
+        event.setDate(date);
+        event.setDescription(description);
+        event.setCreated(LocalDateTime.now());
+        event.setCancelled(false);
+
+        return event;
+    }
+
+    public Invitation sendInvitation(InvitationId invitationId, Attendee attendee) {
+        if (!isInFuture()) {
             throw new DomainException("Cannot send invitation for event in the past");
         }
 
-        invitations.add(invitation);
+        if (isCancelled) {
+            throw new DomainException("Cannot send invitation for a cancelled event");
+        }
+
+        return Invitation.send(invitationId, this.eventId, attendee);
     }
 
     public void cancel() {
-        if(cancelled) {
+        if (!isInFuture()) {
+            throw new DomainException("Cannot cancel event in the past");
+        }
+
+        if (isCancelled) {
             throw new DomainException("Cannot cancel event already cancelled");
         }
 
-        this.cancelled = true;
-        // Todo: raise domain event.
+        setCancelled(true);
+        // Todo: raise domain exception
     }
 
     public void reschedule(Date newDate) {
-        if(cancelled) {
+        if (!isInFuture()) {
+            throw new DomainException("Cannot reschedule event in the past");
+        }
+
+        if (isCancelled) {
             throw new DomainException("Cannot reschedule a cancelled event");
         }
 
         setDate(newDate);
-        // Todo: raise domain event.
+        // Todo: raise domain exception
     }
 
     private boolean isInFuture() {
-        return LocalDateTime.now().compareTo(date.getStart()) < 0;
-    }
-
-    // Getters.
-    public String getName() {
-        return name;
-    }
-
-    public Organiser getOrganiser() {
-        return organiser;
-    }
-
-    public Date getDate() {
-        return date;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public LocalDateTime getCreated() {
-        return created;
-    }
-
-    public Collection<Invitation> getInvitations() {
-        return invitations;
-    }
-
-    public boolean isCancelled() {
-        return cancelled;
+        return this.date.compareTo(LocalDateTime.now()) > 0;
     }
 
     // Setters.
-
-    public void setDate(Date date) {
-        if(LocalDateTime.now().compareTo(date.getStart()) > 0) {
-            throw new DomainException("Start date must be in the future");
+    private void setDate(Date date) {
+        if (this.date.compareTo(LocalDateTime.now()) < 0) {
+            throw new DomainException("Cannot register an event starting in the past");
         }
 
         this.date = date;
+    }
+
+    private void setEventId(EventId eventId) {
+        this.eventId = eventId;
+    }
+
+    private void setName(String name) {
+        this.name = name;
+    }
+
+    private void setOrganiser(Organiser organiser) {
+        this.organiser = organiser;
+    }
+
+    private void setDescription(String description) {
+        this.description = description;
+    }
+
+    private void setCreated(LocalDateTime created) {
+        this.created = created;
+    }
+
+    private void setCancelled(boolean isCancelled) {
+        this.isCancelled = isCancelled;
     }
 }

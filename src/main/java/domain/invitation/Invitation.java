@@ -1,61 +1,65 @@
 package domain.invitation;
 
-import domain.common.AggregateRoot;
-import domain.exception.DomainException;
+import domain.common.DomainException;
+import domain.event.EventId;
 
 import java.time.LocalDateTime;
 
 public class Invitation {
+    private InvitationId invitationId;
+    private EventId eventId;
     private Attendee attendee;
     private Response response;
     private LocalDateTime dateCreated;
 
-    public Invitation(Attendee attendee, Response response) {
-        setAttendee(attendee);
-        setResponse(response);
-        setDateCreated(LocalDateTime.now());
+    private Invitation() {
+        // Client must construct aggregate through factory methods.
     }
 
-    public void respond(Response response) {
+    public static Invitation send(InvitationId invitationId, EventId eventId, Attendee attendee) {
+        Invitation invitation = new Invitation();
+        invitation.setInvitationId(invitationId);
+        invitation.setEventId(eventId);
+        invitation.setAttendee(attendee);
+        invitation.setResponse(null);
+        return invitation;
+    }
+
+    public void respond(Rsvp rsvp, String message) {
         if(hasResponse()) {
             throw new DomainException("Cannot respond to invitation already responded to");
         }
 
-        setResponse(response);
-
-        // Todo: raise domain event.
-        // Todo: Check event date is in the future.
+        this.response = new Response(rsvp, message, LocalDateTime.now());
+        // Todo: raise responded domain event
     }
-
 
     private boolean hasResponse() {
         return this.response != null;
     }
 
-
-    public Attendee getAttendee() {
-        return attendee;
+    // Setters.
+    private Invitation setInvitationId(InvitationId invitationId) {
+        this.invitationId = invitationId;
+        return this;
     }
 
-    public Invitation setAttendee(Attendee attendee) {
+    private Invitation setEventId(EventId eventId) {
+        this.eventId = eventId;
+        return this;
+    }
+
+    private Invitation setAttendee(Attendee attendee) {
         this.attendee = attendee;
         return this;
     }
 
-    public Response getResponse() {
-        return response;
-    }
-
-    public Invitation setResponse(Response response) {
+    private Invitation setResponse(Response response) {
         this.response = response;
         return this;
     }
 
-    public LocalDateTime getDateCreated() {
-        return dateCreated;
-    }
-
-    public Invitation setDateCreated(LocalDateTime dateCreated) {
+    private Invitation setDateCreated(LocalDateTime dateCreated) {
         this.dateCreated = dateCreated;
         return this;
     }

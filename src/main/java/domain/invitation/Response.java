@@ -4,39 +4,24 @@ import java.time.LocalDateTime;
 
 public class Response {
     private Rsvp rsvp;
-    private LocalDateTime dateResponded;
     private String message;
+    private LocalDateTime dateResponded;
 
-    public Response(Rsvp rsvp, String message) {
+    public Response(Rsvp rsvp, String message, LocalDateTime dateResponded) {
         setRsvp(rsvp);
-        setDateResponded(LocalDateTime.now());
         setMessage(message);
+        setDateResponded(dateResponded);
     }
 
-    public Rsvp getRsvp() {
-        return rsvp;
-    }
-
-    public Response setRsvp(Rsvp rsvp) {
+    private void setRsvp(Rsvp rsvp) {
         this.rsvp = rsvp;
-        return this;
     }
 
-    public LocalDateTime getDateResponded() {
-        return dateResponded;
-    }
-
-    public Response setDateResponded(LocalDateTime dateResponded) {
-        this.dateResponded = dateResponded;
-        return this;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public Response setMessage(String message) {
+    private void setMessage(String message) {
         this.message = message;
-        return this;
+    }
+
+    private void setDateResponded(LocalDateTime dateResponded) {
+        this.dateResponded = dateResponded;
     }
 }
