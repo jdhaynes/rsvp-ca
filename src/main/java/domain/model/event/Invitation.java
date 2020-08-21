@@ -1,11 +1,11 @@
-package domain.model.invitation;
+package domain.model.event;
 
 import domain.model.common.DomainException;
-import domain.model.event.EventId;
+import domain.model.common.Entity;
 
 import java.time.LocalDateTime;
 
-public class Invitation {
+public class Invitation extends Entity<InvitationId> {
     private InvitationId invitationId;
     private EventId eventId;
     private Attendee attendee;
@@ -16,7 +16,7 @@ public class Invitation {
         // Client must construct aggregate through factory methods for encapsulation.
     }
 
-    public static Invitation send(InvitationId invitationId, EventId eventId, Attendee attendee) {
+    protected static Invitation send(InvitationId invitationId, EventId eventId, Attendee attendee) {
         Invitation invitation = new Invitation();
         invitation.setInvitationId(invitationId);
         invitation.setEventId(eventId);

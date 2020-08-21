@@ -1,14 +1,14 @@
 package domain.model.event;
 
 import domain.model.common.DomainException;
-import domain.model.invitation.Attendee;
-import domain.model.invitation.Invitation;
-import domain.model.invitation.InvitationId;
+import domain.model.common.Entity;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Stream;
 
-public class Event {
-    private EventId eventId;
+public class Event extends Entity<EventId> {
     private String name;
     private Organiser organiser;
     private Location location;
@@ -16,6 +16,7 @@ public class Event {
     private String description;
     private LocalDateTime created;
     private boolean isCancelled;
+    private List<Invitation> invitations;
 
     private Event() {
         // Client must construct aggregate through factory methods for encapsulation.
@@ -24,7 +25,7 @@ public class Event {
     public static Event register(EventId id, String name, Organiser organiser, Date date,
                                  String description, Location location) {
         Event event = new Event();
-        event.setEventId(id);
+        event.setId(id);
         event.setName(name);
         event.setOrganiser(organiser);
         event.setDate(date);
@@ -32,44 +33,58 @@ public class Event {
         event.setCreated(LocalDateTime.now());
         event.setIsCancelled(false);
         event.setLocation(location);
+        event.setInvitations(new ArrayList<>());
         return event;
     }
 
     public Invitation sendInvitation(InvitationId invitationId, Attendee attendee) {
-        if (!isInFuture()) {
-            throw new DomainException("Cannot send invitation for event in the past");
-        }
+        validateInFuture();
+        validateIsNotCancelled();
 
-        if (isCancelled) {
-            throw new DomainException("Cannot send invitation for a cancelled event");
-        }
-
-        return Invitation.send(invitationId, this.eventId, attendee);
+        return Invitation.send(invitationId, this.id, attendee);
     }
 
     public void cancel() {
-        if (!isInFuture()) {
-            throw new DomainException("Cannot cancel event in the past");
-        }
-
-        if (isCancelled) {
-            throw new DomainException("Cannot cancel event already cancelled");
-        }
+        validateInFuture();
+        validateIsNotCancelled();
 
         setIsCancelled(true);
     }
 
     public void reschedule(Date newDate, String newDescription) {
-        if (!isInFuture()) {
-            throw new DomainException("Cannot reschedule event in the past");
-        }
-
-        if (isCancelled) {
-            throw new DomainException("Cannot reschedule a cancelled event");
-        }
+        validateInFuture();
+        validateIsNotCancelled();
 
         setDate(newDate);
         setDescription(description);
+    }
+
+    public void respondToInvitation(InvitationId invitationId, Rsvp rsvp, String message) {
+        validateInFuture();
+        validateIsNotCancelled();
+
+        Stream<Invitation> invitationSearch = invitations
+                .stream()
+                .filter(x -> x.getId() == invitationId);
+
+        if(invitationSearch.findFirst().isPresent()) {
+            Invitation invitation = invitationSearch.findFirst().get();
+            invitation.respond(rsvp, message);
+        } else {
+            throw new DomainException("Invitation not associated with event");
+        }
+    }
+
+    private void validateInFuture() {
+        if (!isInFuture()) {
+            throw new DomainException("Event is in the past");
+        }
+    }
+
+    private void validateIsNotCancelled() {
+        if (isCancelled) {
+            throw new DomainException("Event is cancelled");
+        }
     }
 
     private boolean isInFuture() {
@@ -82,10 +97,6 @@ public class Event {
         }
 
         this.date = date;
-    }
-
-    private void setEventId(EventId eventId) {
-        this.eventId = eventId;
     }
 
     private void setName(String name) {
@@ -110,5 +121,9 @@ public class Event {
 
     public void setLocation(Location location) {
         this.location = location;
+    }
+
+    public void setInvitations(List<Invitation> invitations) {
+        this.invitations = invitations;
     }
 }

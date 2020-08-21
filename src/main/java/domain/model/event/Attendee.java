@@ -1,4 +1,4 @@
-package domain.model.invitation;
+package domain.model.event;
 
 import domain.model.common.DomainException;
 import domain.model.common.EmailAddress;

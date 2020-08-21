@@ -12,7 +12,7 @@ public class RegisterEventCommandHandler implements CommandHandler<RegisterEvent
     }
 
     @Override
-    public void Handle(RegisterEventCommand command) {
+    public void handle(RegisterEventCommand command) {
         Organiser organiser = new Organiser(command.getOrganiserFirstName(),
                 command.getOrganiserLastName(),
                 new EmailAddress(command.getOrganiserEmailAddress()));

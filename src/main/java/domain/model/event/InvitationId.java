@@ -1,4 +1,4 @@
-package domain.model.invitation;
+package domain.model.event;
 
 public class InvitationId {
     private String id;
