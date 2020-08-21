@@ -18,10 +18,8 @@ public class RegisterEventCommandHandler implements CommandHandler<RegisterEvent
                 new EmailAddress(command.getOrganiserEmailAddress()));
 
         Location location = new Location(command.getLocationFirstLine(),
-                command.getLocationSecondLine(),
-                command.getLocationCity(),
-                command.getLocationStateProvince(),
-                command.getLocationPostcode(),
+                command.getLocationSecondLine(), command.getLocationCity(),
+                command.getLocationStateProvince(), command.getLocationPostcode(),
                 command.getLocationCountry());
 
         Date date = new Date(command.getStartDate(), command.getEndDate());

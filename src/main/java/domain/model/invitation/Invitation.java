@@ -23,7 +23,6 @@ public class Invitation {
         invitation.setAttendee(attendee);
         invitation.setResponse(null);
         return invitation;
-
     }
 
     public void respond(Rsvp rsvp, String message) {
